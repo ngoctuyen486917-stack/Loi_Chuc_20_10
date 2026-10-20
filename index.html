@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#bfe3f7">
+<title>Dành bạn, cả một vườn thương</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  position: relative;
+  font-family: "Lora", Georgia, "Times New Roman", serif;
+  font-size: 16px;
+  color: #4a4358;
+  background: #bfe3f7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, #86c5f0 0%, #b5ddf5 38%, #e4f3fa 72%, #f7fbf3 100%);
+  overflow: hidden;
+}
+
+.cloud {
+  position: absolute;
+  background:
+    radial-gradient(ellipse 26% 42% at 24% 62%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0)),
+    radial-gradient(ellipse 30% 58% at 50% 44%, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0)),
+    radial-gradient(ellipse 27% 44% at 77% 62%, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0));
+  animation: drift 46s ease-in-out infinite alternate;
+}
+
+.cloud.c1 { width: 46vw; height: 18vh; top: 14%; left: 4%; }
+.cloud.c2 { width: 40vw; height: 15vh; top: 30%; left: 58%; animation-duration: 58s; animation-delay: -12s; }
+.cloud.c3 { width: 34vw; height: 13vh; top: 46%; left: -6%; animation-duration: 52s; animation-delay: -24s; opacity: 0.85; }
+.cloud.c4 { width: 38vw; height: 14vh; top: 4%; left: 62%; animation-duration: 64s; animation-delay: -30s; opacity: 0.9; }
+.cloud.c5 { width: 30vw; height: 11vh; top: 58%; left: 40%; animation-duration: 70s; animation-delay: -6s; opacity: 0.7; }
+
+@keyframes drift {
+  from { transform: translateX(-6vw); }
+  to { transform: translateX(8vw); }
+}
+
+#garden {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+}
+
+.dedication {
+  position: fixed;
+  z-index: 5;
+  top: max(18px, env(safe-area-inset-top));
+  left: 20px;
+  right: 20px;
+  margin: 0;
+  font-size: clamp(0.95rem, 2.6vw, 1.1rem);
+  font-style: italic;
+  color: #5a5478;
+  text-shadow: 0 1px 6px rgba(255, 255, 255, 0.9);
+}
+
+.intro {
+  position: fixed;
+  z-index: 5;
+  top: 12%;
+  left: 0;
+  right: 0;
+  padding: 0 20px;
+  text-align: center;
+  pointer-events: none;
+  transition: opacity 0.9s ease;
+}
+
+.intro.gone {
+  opacity: 0;
+}
+
+.intro h1 {
+  margin: 0 auto;
+  max-width: 18em;
+  font-size: clamp(1.7rem, 6.2vw, 2.7rem);
+  font-weight: 500;
+  line-height: 1.3;
+  color: #6a5a94;
+  text-shadow: 0 2px 14px rgba(255, 255, 255, 0.95);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.intro h1.swap {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.intro p {
+  margin: 0.7rem auto 0;
+  max-width: 24em;
+  font-size: clamp(0.92rem, 2.8vw, 1.08rem);
+  font-style: italic;
+  line-height: 1.5;
+  color: #4d5b78;
+  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.95);
+  transition: opacity 0.5s ease;
+}
+
+.intro p.gone {
+  opacity: 0;
+}
+
+.hero-hit {
+  position: fixed;
+  z-index: 4;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hero-hit[hidden] {
+  display: none;
+}
+
+.hero-hit:focus-visible {
+  outline: 3px dashed rgba(255, 255, 255, 0.95);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 8px rgba(106, 90, 148, 0.25);
+}
+
+.pointer {
+  position: fixed;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s ease;
+}
+
+.pointer.show {
+  opacity: 1;
+}
+
+.pointer.gone {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+}
+
+.pointer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  animation: nudge 1.3s ease-in-out infinite;
+}
+
+.pointer svg {
+  width: 64px;
+  height: 64px;
+  overflow: visible;
+}
+
+.pointer path {
+  fill: none;
+  stroke: #6a5a94;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pointer span {
+  display: block;
+  margin-left: 6px;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 500;
+  white-space: nowrap;
+  color: #5a4a84;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 4px 14px rgba(90, 74, 132, 0.16);
+}
+
+@keyframes nudge {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-8px, -8px); }
+}
+
+.actions {
+  position: fixed;
+  z-index: 7;
+  left: 0;
+  right: 0;
+  bottom: max(22px, env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 16px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease, visibility 0s linear 0.5s;
+}
+
+.actions.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.pill {
+  min-height: 44px;
+  padding: 0.65rem 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #5a4a6e;
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 18px rgba(80, 70, 120, 0.18);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.pill:hover {
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-1px);
+}
+
+.pill:focus-visible,
+.close-btn:focus-visible {
+  outline: 3px solid #6a5a94;
+  outline-offset: 3px;
+}
+
+.card-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(240, 248, 252, 0.35);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.card-wrap[hidden] {
+  display: none;
+}
+
+.card-wrap.open {
+  opacity: 1;
+}
+
+.card {
+  width: min(100%, 440px);
+  max-height: min(88vh, 740px);
+  overflow-y: auto;
+  padding: clamp(1.6rem, 5vw, 2.5rem) clamp(1.4rem, 5vw, 2.4rem);
+  border-radius: 16px;
+  text-align: center;
+  color: #4a4358;
+  background: #fcfaf5;
+  box-shadow: 0 26px 64px rgba(60, 50, 100, 0.3), 0 2px 0 rgba(255, 255, 255, 0.9) inset;
+  transform: translateY(14px) scale(0.96);
+  transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.25, 1);
+  scrollbar-width: thin;
+  scrollbar-color: #b9d6d0 transparent;
+}
+
+.card-wrap.open .card {
+  transform: translateY(0) scale(1);
+}
+
+.card-rose {
+  display: block;
+  width: 38px;
+  height: 38px;
+  margin: 0 auto 0.7rem;
+}
+
+.greeting {
+  margin: 0 0 0.6rem;
+  font-size: 1.02rem;
+  font-style: italic;
+  color: #8a6f93;
+}
+
+.card h2 {
+  margin: 0 auto 1.3rem;
+  max-width: 11em;
+  font-size: clamp(1.6rem, 6.2vw, 2.2rem);
+  font-weight: 600;
+  line-height: 1.3;
+  color: #3f3558;
+  text-wrap: balance;
+}
+
+.card p {
+  margin: 0 0 1rem;
+  font-size: clamp(0.97rem, 3.6vw, 1.04rem);
+  line-height: 1.75;
+  color: #5a5268;
+}
+
+.card .sign {
+  margin: 1.4rem 0 0.4rem;
+  font-size: 1.08rem;
+  font-style: italic;
+  font-weight: 600;
+  color: #4a3d63;
+}
+
+.close-btn {
+  min-height: 44px;
+  margin-top: 0.6rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-bottom: 1px solid #8a6f93;
+  font-family: inherit;
+  font-size: 1rem;
+  font-style: italic;
+  color: #5a4a6e;
+  background: transparent;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #3f3558;
+  border-bottom-color: #3f3558;
+}
+
+@media (max-width: 480px) {
+  .actions {
+    gap: 8px;
+  }
+
+  .pill {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .pointer svg {
+    width: 52px;
+    height: 52px;
+  }
+
+  .pointer span {
+    font-size: 0.88rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cloud,
+  .pointer-inner {
+    animation: none;
+  }
+
+  .card,
+  .card-wrap,
+  .intro,
+  .intro h1 {
+    transition-duration: 0.01s;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="sky" aria-hidden="true">
+  <span class="cloud c1"></span>
+  <span class="cloud c2"></span>
+  <span class="cloud c3"></span>
+  <span class="cloud c4"></span>
+  <span class="cloud c5"></span>
+</div>
+
+<canvas id="garden" aria-hidden="true"></canvas>
+
+<p class="dedication">Dành bạn, cả một vườn thương.</p>
+
+<header class="intro" id="intro">
+  <h1 id="title">Từ một bông hoa nhỏ…</h1>
+  <p id="hint">Chạm vào hoa, một điều dịu dàng đang chờ bạn.</p>
+</header>
+
+<button class="hero-hit" id="heroHit" type="button" aria-label="Nhấn vào bông hoa để mở khu vườn"></button>
+
+<div class="pointer" id="pointer" aria-hidden="true">
+  <div class="pointer-inner">
+    <svg viewBox="0 0 64 64">
+      <path d="M58 60 C 56 36, 36 16, 10 10"></path>
+      <path d="M23 2 L10 10 L20 22"></path>
+    </svg>
+    <span>Nhấn vào hoa nhé</span>
+  </div>
+</div>
+
+<div class="actions" id="actions">
+  <button class="pill" id="rereadBtn" type="button">Đọc lại thiệp</button>
+  <button class="pill" id="regrowBtn" type="button">Cho hoa nở lại</button>
+</div>
+
+<div class="card-wrap" id="cardWrap" hidden>
+  <article class="card" id="card" role="dialog" aria-modal="true" aria-labelledby="cardTitle">
+    <svg class="card-rose" viewBox="0 0 40 40" aria-hidden="true">
+      <path d="M20 22 C 20 28, 19 33, 20 38" fill="none" stroke="#4d8a56" stroke-width="2" stroke-linecap="round"></path>
+      <path d="M20 31 C 25 29, 29 30, 31 27 C 27 25, 22 26, 20 31 Z" fill="#6fae72"></path>
+      <circle cx="20" cy="14" r="10" fill="#f58aa4"></circle>
+      <circle cx="20" cy="14" r="7" fill="#f9a9bc"></circle>
+      <circle cx="20" cy="14" r="4" fill="#f58aa4"></circle>
+      <path d="M20 14 m-1.5 0 a1.5 1.5 0 1 1 1.5 1.5" fill="none" stroke="#d04a70" stroke-width="1.2" stroke-linecap="round"></path>
+    </svg>
+    <p class="greeting">Gửi bạn thương mến,</p>
+    <h2 id="cardTitle">Mong những điều đẹp đẽ luôn nở bên bạn.</h2>
+    <p>Nhân ngày 20/10, mình chúc bạn luôn được yêu thương, được trân trọng và có thật nhiều niềm vui trong cuộc sống.</p>
+    <p>Một bông hoa có thể làm một ngày thêm đẹp. Còn bạn, bạn làm cho thế giới này dịu dàng hơn mỗi ngày.</p>
+    <p>Mong bạn đủ bình yên để tận hưởng những điều nhỏ bé, đủ tự tin để theo đuổi những điều mình yêu, và đủ may mắn để luôn có người ở bên mỗi khi cần.</p>
+    <p>Hôm nay và cả những ngày sau, hãy cứ rạng rỡ theo cách của riêng mình nhé.</p>
+    <p class="sign">Chúc mừng ngày Phụ nữ Việt Nam 20/10 ♥</p>
+    <button class="close-btn" id="closeBtn" type="button">Ngắm vườn hoa</button>
+  </article>
+</div>
+
+<script>
+(function () {
+  var canvas = document.getElementById('garden');
+  var ctx = canvas.getContext('2d');
+  var heroHit = document.getElementById('heroHit');
+  var pointer = document.getElementById('pointer');
+  var intro = document.getElementById('intro');
+  var title = document.getElementById('title');
+  var hint = document.getElementById('hint');
+  var actions = document.getElementById('actions');
+  var cardWrap = document.getElementById('cardWrap');
+  var closeBtn = document.getElementById('closeBtn');
+  var rereadBtn = document.getElementById('rereadBtn');
+  var regrowBtn = document.getElementById('regrowBtn');
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var speed = reduceMotion ? 3 : 1;
+  var PAD = 1.25;
+  var WHITE = [255, 255, 255];
+
+  var state = {
+    w: 0,
+    h: 0,
+    dpr: 1,
+    phase: 'intro',
+    introStart: performance.now(),
+    gardenStart: 0,
+    boostStart: 0,
+    flowers: [],
+    hero: null,
+    petals: [],
+    hover: 0,
+    hoverTarget: 0,
+    lastTime: performance.now(),
+    cardOpen: false
+  };
+
+  function hexToRgb(hex) {
+    return [1, 3, 5].map(function (i) {
+      return parseInt(hex.slice(i, i + 2), 16);
+    });
+  }
+
+  function blend(a, b, t) {
+    return a.map(function (v, i) {
+      return Math.round(v + (b[i] - v) * t);
+    });
+  }
+
+  function css(c, alpha) {
+    return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (alpha === undefined ? 1 : alpha) + ')';
+  }
+
+  function clamp(v, min, max) {
+    return Math.max(min, Math.min(max, v));
+  }
+
+  function easeOutCubic(x) {
+    return 1 - Math.pow(1 - x, 3);
+  }
+
+  function easeOutBack(x) {
+    var c1 = 1.70158;
+    var c3 = c1 + 1;
+    return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+  }
+
+  function makeRandom(seed) {
+    return function () {
+      seed |= 0;
+      seed = (seed + 0x6D2B79F5) | 0;
+      var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  var PALETTES = [
+    { light: '#ffd9e1', base: '#f58aa4', dark: '#d04a70' },
+    { light: '#ffe6d3', base: '#f9a77f', dark: '#d9743f' },
+    { light: '#effbd6', base: '#b5e07f', dark: '#78ad45' },
+    { light: '#dcedff', base: '#86b9ee', dark: '#4a85c9' },
+    { light: '#ffd5d0', base: '#f67f7a', dark: '#cf4a50' },
+    { light: '#fffaf0', base: '#f1e0c4', dark: '#c9a77a' },
+    { light: '#ece4ff', base: '#b9a5ea', dark: '#8468c4' }
+  ].map(function (p) {
+    return { light: hexToRgb(p.light), base: hexToRgb(p.base), dark: hexToRgb(p.dark) };
+  });
+
+  var PALETTE_PICK = [0, 0, 0, 1, 1, 2, 2, 3, 4, 4, 5, 6];
+  var STEM_COLOR = hexToRgb('#3d7d47');
+  var LEAF_COLORS = [hexToRgb('#2f6b3a'), hexToRgb('#3f8a4a'), hexToRgb('#5fa65c'), hexToRgb('#2d5a3d')];
+
+  function drawRoseShape(g, r, pal, variant) {
+    var layers = 6;
+    var edge = blend(pal.dark, WHITE, 0.3);
+
+    for (var k = 0; k < layers; k++) {
+      var t = k / (layers - 1);
+      var rk = r * (1 - t * 0.74);
+      var petals = 9 - k;
+      var phase = variant * 0.8 + k * 1.1;
+      var fill = blend(pal.light, pal.base, 0.2 + t * 0.8);
+
+      var grad = g.createRadialGradient(-rk * 0.3, -rk * 0.35, rk * 0.05, 0, 0, rk * 1.05);
+      grad.addColorStop(0, css(blend(fill, WHITE, 0.5)));
+      grad.addColorStop(1, css(blend(fill, pal.dark, 0.3)));
+
+      g.beginPath();
+      var steps = 90;
+      for (var i = 0; i <= steps; i++) {
+        var a = (i / steps) * Math.PI * 2;
+        var rad = rk * (1 + 0.085 * Math.cos(petals * a + phase) + 0.03 * Math.sin(2 * a + variant));
+        var x = Math.cos(a) * rad;
+        var y = Math.sin(a) * rad;
+        if (i === 0) {
+          g.moveTo(x, y);
+        } else {
+          g.lineTo(x, y);
+        }
+      }
+      g.closePath();
+
+      if (k === 0) {
+        g.shadowColor = css(pal.dark, 0.4);
+        g.shadowBlur = r * 0.14;
+        g.shadowOffsetY = r * 0.05;
+      }
+      g.fillStyle = grad;
+      g.fill();
+      g.shadowColor = 'transparent';
+      g.shadowBlur = 0;
+      g.shadowOffsetY = 0;
+
+      g.lineWidth = Math.max(1, r * 0.016);
+      g.strokeStyle = css(edge, 0.7);
+      g.stroke();
+
+      if (k > 0) {
+        g.strokeStyle = css(edge, 0.45);
+        g.lineWidth = Math.max(1, r * 0.012);
+        for (var j = 0; j < petals; j++) {
+          var a0 = (j / petals) * Math.PI * 2 + phase;
+          g.beginPath();
+          g.arc(0, 0, rk * 0.8, a0, a0 + (Math.PI * 2 / petals) * 0.62);
+          g.stroke();
+        }
+      }
+    }
+
+    g.beginPath();
+    var turns = 2.6;
+    for (var s = 0; s <= 60; s++) {
+      var u = s / 60;
+      var ang = u * turns * Math.PI * 2 + variant;
+      var sr = r * (0.03 + 0.2 * u);
+      var sx = Math.cos(ang) * sr;
+      var sy = Math.sin(ang) * sr;
+      if (s === 0) {
+        g.moveTo(sx, sy);
+      } else {
+        g.lineTo(sx, sy);
+      }
+    }
+    g.strokeStyle = css(pal.dark, 0.85);
+    g.lineWidth = Math.max(1, r * 0.035);
+    g.lineCap = 'round';
+    g.stroke();
+  }
+
+  function makeRoseSprite(pal, variant, r) {
+    var size = Math.ceil(r * 2 * PAD);
+    var c = document.createElement('canvas');
+    c.width = size;
+    c.height = size;
+    var g = c.getContext('2d');
+    g.translate(size / 2, size / 2);
+    drawRoseShape(g, r, pal, variant);
+    return c;
+  }
+
+  function makeBudSprite(pal) {
+    var c = document.createElement('canvas');
+    c.width = 100;
+    c.height = 160;
+    var g = c.getContext('2d');
+    g.translate(50, 140);
+
+    var body = g.createLinearGradient(-40, 0, 40, 0);
+    body.addColorStop(0, css(blend(pal.light, WHITE, 0.3)));
+    body.addColorStop(0.5, css(pal.base));
+    body.addColorStop(1, css(pal.dark));
+
+    g.beginPath();
+    g.moveTo(0, -125);
+    g.bezierCurveTo(38, -85, 42, -20, 0, 6);
+    g.bezierCurveTo(-42, -20, -38, -85, 0, -125);
+    g.fillStyle = body;
+    g.fill();
+    g.strokeStyle = css(blend(pal.dark, WHITE, 0.3), 0.7);
+    g.lineWidth = 1.5;
+    g.stroke();
+
+    g.beginPath();
+    g.moveTo(0, -118);
+    g.quadraticCurveTo(10, -60, 2, -4);
+    g.strokeStyle = css(pal.dark, 0.4);
+    g.stroke();
+
+    var sepal = css(hexToRgb('#4a9a55'));
+    [-1, 1].forEach(function (side) {
+      g.beginPath();
+      g.moveTo(0, 8);
+      g.bezierCurveTo(side * 30, -8, side * 36, -42, side * 14, -62);
+      g.bezierCurveTo(side * 14, -34, side * 5, -14, 0, 8);
+      g.fillStyle = sepal;
+      g.fill();
+    });
+    return c;
+  }
+
+  var ROSE_SPRITES = PALETTES.map(function (p) {
+    return [0, 1, 2].map(function (v) {
+      return makeRoseSprite(p, v, 110);
+    });
+  });
+  var HERO_SPRITE = makeRoseSprite(PALETTES[0], 0, 220);
+  var BUD_SPRITES = PALETTES.map(makeBudSprite);
+
+  function drawLeaf(x, y, side, len, color) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(side, 1);
+    ctx.rotate(-0.6);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.quadraticCurveTo(len * 0.35, -len * 0.4, len, 0);
+    ctx.quadraticCurveTo(len * 0.4, len * 0.32, 0, 0);
+    ctx.fillStyle = css(color, 0.95);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(len * 0.88, 0);
+    ctx.strokeStyle = css(blend(color, WHITE, 0.4), 0.6);
+    ctx.lineWidth = Math.max(1, len * 0.03);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function resize() {
+    state.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    state.w = window.innerWidth;
+    state.h = window.innerHeight;
+    canvas.width = Math.round(state.w * state.dpr);
+    canvas.height = Math.round(state.h * state.dpr);
+    ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+    buildScene();
+  }
+
+  function buildScene() {
+    var w = state.w;
+    var h = state.h;
+    var rng = makeRandom(2010);
+    var heroR = clamp(Math.min(w * 0.17, h * 0.11), 38, 78);
+    var heroY = h * 0.4;
+    var heroFinal = heroR * 1.3;
+
+    var hero = {
+      hero: true,
+      kind: 'rose',
+      x: w / 2,
+      baseDx: 0,
+      headY: heroY,
+      r: heroR,
+      pal: PALETTES[0],
+      pi: 0,
+      variant: 0,
+      depth: 0.86,
+      bend: w * 0.02,
+      phase: 0,
+      speed: 1,
+      swayAmp: 3,
+      rot: 0,
+      alpha: 1,
+      leafColor: LEAF_COLORS[1],
+      leaves: [
+        { t: 0.42, side: 1, len: heroR * 1.15 },
+        { t: 0.66, side: -1, len: heroR }
+      ]
+    };
+
+    var count = clamp(Math.round(w / 11), 34, 120);
+    var list = [];
+    var tries = 0;
+
+    while (list.length < count && tries < count * 5) {
+      tries++;
+      var d = Math.pow(rng(), 0.9);
+      var x = -0.03 * w + rng() * 1.06 * w;
+      var headY = h * (0.26 + 0.5 * (0.55 * rng() + 0.45 * d));
+      var isBud = rng() < 0.2;
+      var r = heroR * (0.26 + 0.34 * rng()) * (0.55 + 0.65 * d);
+      if (isBud) {
+        r *= 0.85;
+      }
+      if (Math.hypot(x - hero.x, headY - heroY) < heroFinal * 1.35 + r) {
+        continue;
+      }
+      var pi = PALETTE_PICK[Math.floor(rng() * PALETTE_PICK.length)];
+      var leafColor = LEAF_COLORS[Math.floor(rng() * LEAF_COLORS.length)];
+      var sideA = rng() < 0.5 ? 1 : -1;
+
+      list.push({
+        hero: false,
+        kind: isBud ? 'bud' : 'rose',
+        x: x,
+        baseDx: (rng() - 0.5) * w * 0.04,
+        headY: headY,
+        r: r,
+        pal: PALETTES[pi],
+        pi: pi,
+        variant: Math.floor(rng() * 3),
+        depth: d,
+        bend: (rng() - 0.5) * w * 0.06,
+        phase: rng() * Math.PI * 2,
+        speed: 0.7 + rng() * 0.8,
+        swayAmp: (2 + rng() * 5) * (0.5 + d),
+        rot: (rng() - 0.5) * 1.2,
+        alpha: 0.6 + 0.4 * d,
+        delay: 0.25 + (Math.abs(x - w / 2) / (w / 2)) * 1.9 + rng() * 0.5,
+        dur: 1.5 + rng() * 0.8,
+        leafColor: leafColor,
+        leaves: [
+          { t: 0.4 + rng() * 0.1, side: sideA, len: r * (0.9 + rng() * 0.4) },
+          { t: 0.62 + rng() * 0.1, side: -sideA, len: r * (0.8 + rng() * 0.4) }
+        ]
+      });
+    }
+
+    state.hero = hero;
+    state.flowers = list.concat(hero).sort(function (a, b) {
+      return a.depth - b.depth;
+    });
+
+    placeHeroUI(heroR, heroY);
+    buildPetals();
+  }
+
+  function placeHeroUI(heroR, heroY) {
+    var size = heroR * 2.6;
+    var boxLeft = state.w / 2 - size / 2;
+    var boxTop = heroY - size / 2;
+    heroHit.style.width = size + 'px';
+    heroHit.style.height = size + 'px';
+    heroHit.style.left = boxLeft + 'px';
+    heroHit.style.top = boxTop + 'px';
+
+    var px = clamp(state.w / 2 + heroR * 0.8, 8, state.w - 170);
+    pointer.style.left = px + 'px';
+    pointer.style.top = heroY + heroR * 0.7 + 'px';
+  }
+
+  function buildPetals() {
+    var count = state.w < 600 ? 12 : 24;
+    state.petals = [];
+    for (var i = 0; i < count; i++) {
+      var pal = PALETTES[PALETTE_PICK[Math.floor(Math.random() * PALETTE_PICK.length)]];
+      state.petals.push({
+        x: Math.random() * state.w,
+        y: -Math.random() * state.h,
+        size: 4 + Math.random() * 5,
+        vy: 22 + Math.random() * 30,
+        drift: 10 + Math.random() * 20,
+        phase: Math.random() * Math.PI * 2,
+        rot: Math.random() * Math.PI * 2,
+        vr: (Math.random() - 0.5) * 2,
+        color: pal.light,
+        alpha: 0.6 + Math.random() * 0.3
+      });
+    }
+  }
+
+  function bezierPoint(f, t) {
+    var u = 1 - t;
+    return {
+      x: u * u * f.bx + 2 * u * t * f.cx + t * t * f.tx,
+      y: u * u * f.by + 2 * u * t * f.cy + t * t * f.ty
+    };
+  }
+
+  function drawFlower(f, now, elapsed) {
+    var g;
+    var r = f.r;
+
+    if (f.hero) {
+      g = clamp((now - state.introStart - 400) / 2600, 0, 1);
+      if (state.boostStart) {
+        var boost = easeOutCubic(clamp((now - state.boostStart) / (2600 / speed), 0, 1));
+        r = f.r * (1 + 0.3 * boost);
+      }
+      r *= 1 + 0.05 * state.hover;
+    } else {
+      g = clamp((elapsed - f.delay) / f.dur, 0, 1);
+    }
+    if (g <= 0) {
+      return;
+    }
+
+    var stemG = easeOutCubic(clamp(g / 0.7, 0, 1));
+    var bloomRaw = clamp((g - 0.55) / 0.45, 0, 1);
+    var bloom = easeOutBack(bloomRaw);
+    var sway = reduceMotion ? 0 : Math.sin(now * 0.0011 * f.speed + f.phase) * f.swayAmp;
+
+    var geo = {
+      bx: f.x + f.baseDx,
+      by: state.h + 20,
+      tx: f.x + sway,
+      ty: f.headY
+    };
+    geo.cx = (geo.bx + geo.tx) / 2 + f.bend + sway * 0.5;
+    geo.cy = (geo.by + geo.ty) / 2;
+
+    ctx.save();
+    ctx.globalAlpha = f.alpha * clamp(g * 4, 0, 1);
+
+    ctx.beginPath();
+    ctx.moveTo(geo.bx, geo.by);
+    for (var i = 1; i <= 24; i++) {
+      var p = bezierPoint(geo, (stemG * i) / 24);
+      ctx.lineTo(p.x, p.y);
+    }
+    ctx.strokeStyle = css(STEM_COLOR);
+    ctx.lineWidth = Math.max(1.4, r * 0.07);
+    ctx.lineCap = 'round';
+    ctx.stroke();
+
+    f.leaves.forEach(function (leaf) {
+      if (stemG <= leaf.t) {
+        return;
+      }
+      var s = easeOutCubic(clamp((stemG - leaf.t) / 0.2, 0, 1));
+      var lp = bezierPoint(geo, leaf.t);
+      drawLeaf(lp.x, lp.y, leaf.side, leaf.len * s, f.leafColor);
+    });
+
+    var head = bezierPoint(geo, stemG);
+
+    if (bloomRaw <= 0) {
+      ctx.beginPath();
+      ctx.arc(head.x, head.y, r * 0.18 * stemG, 0, Math.PI * 2);
+      ctx.fillStyle = css(f.pal.base);
+      ctx.fill();
+    } else if (f.kind === 'rose') {
+      var sprite = f.hero ? HERO_SPRITE : ROSE_SPRITES[f.pi][f.variant];
+      var ds = 2 * r * PAD * bloom;
+      ctx.translate(head.x, head.y);
+      ctx.rotate(f.rot + sway * 0.012);
+      ctx.drawImage(sprite, -ds / 2, -ds / 2, ds, ds);
+    } else {
+      var dx = 2 * (1 - 1) * (geo.cx - geo.bx) + 2 * 1 * (geo.tx - geo.cx);
+      var dy = 2 * (1 - 1) * (geo.cy - geo.by) + 2 * 1 * (geo.ty - geo.cy);
+      var angle = Math.atan2(dx, -dy);
+      var k = ((r * 2.4) / 160) * easeOutCubic(bloomRaw);
+      ctx.translate(head.x, head.y);
+      ctx.rotate(angle);
+      ctx.drawImage(BUD_SPRITES[f.pi], -50 * k, -140 * k, 100 * k, 160 * k);
+    }
+
+    ctx.restore();
+  }
+
+  function drawPetals(now, dt, gardenTime) {
+    if (state.phase !== 'garden' || gardenTime < 3.5) {
+      return;
+    }
+    state.petals.forEach(function (p) {
+      p.y += p.vy * dt;
+      p.x += Math.sin(now * 0.001 + p.phase) * p.drift * dt;
+      p.rot += p.vr * dt;
+      if (p.y > state.h + 12) {
+        p.y = -12;
+        p.x = Math.random() * state.w;
+      }
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.globalAlpha = p.alpha;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, p.size, p.size * 0.55, 0, 0, Math.PI * 2);
+      ctx.fillStyle = css(p.color);
+      ctx.fill();
+      ctx.restore();
+    });
+  }
+
+  function frame(now) {
+    var dt = Math.min((now - state.lastTime) / 1000, 0.05);
+    state.lastTime = now;
+
+    state.hover += (state.hoverTarget - state.hover) * 0.12;
+
+    var gardenTime = state.phase === 'garden' ? ((now - state.gardenStart) / 1000) * speed : -1;
+
+    ctx.clearRect(0, 0, state.w, state.h);
+    state.flowers.forEach(function (f) {
+      drawFlower(f, now, gardenTime);
+    });
+    drawPetals(now, dt, gardenTime);
+
+    requestAnimationFrame(frame);
+  }
+
+  function swapTitle(text) {
+    title.classList.add('swap');
+    setTimeout(function () {
+      title.textContent = text;
+      title.classList.remove('swap');
+    }, 450);
+  }
+
+  function startGarden() {
+    if (state.phase !== 'intro') {
+      return;
+    }
+    var now = performance.now();
+    state.phase = 'garden';
+    state.gardenStart = now;
+    state.boostStart = now;
+    state.hoverTarget = 0;
+
+    heroHit.hidden = true;
+    pointer.classList.add('gone');
+    hint.classList.add('gone');
+    swapTitle('…cả một khu vườn đang thức giấc.');
+
+    setTimeout(showCard, 7000 / speed);
+  }
+
+  function showCard() {
+    if (state.cardOpen) {
+      return;
+    }
+    state.cardOpen = true;
+    intro.classList.add('gone');
+    actions.classList.remove('show');
+    cardWrap.hidden = false;
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        cardWrap.classList.add('open');
+      });
+    });
+    closeBtn.focus({ preventScroll: true });
+  }
+
+  function closeCard() {
+    if (!state.cardOpen) {
+      return;
+    }
+    state.cardOpen = false;
+    cardWrap.classList.remove('open');
+    setTimeout(function () {
+      if (!state.cardOpen) {
+        cardWrap.hidden = true;
+      }
+    }, 450);
+    actions.classList.add('show');
+    rereadBtn.focus({ preventScroll: true });
+  }
+
+  function regrow() {
+    actions.classList.remove('show');
+    state.gardenStart = performance.now();
+    setTimeout(function () {
+      if (!state.cardOpen) {
+        actions.classList.add('show');
+      }
+    }, 5200 / speed);
+  }
+
+  heroHit.addEventListener('click', startGarden);
+  heroHit.addEventListener('mouseenter', function () { state.hoverTarget = 1; });
+  heroHit.addEventListener('mouseleave', function () { state.hoverTarget = 0; });
+  heroHit.addEventListener('focus', function () { state.hoverTarget = 1; });
+  heroHit.addEventListener('blur', function () { state.hoverTarget = 0; });
+
+  closeBtn.addEventListener('click', closeCard);
+  rereadBtn.addEventListener('click', showCard);
+  regrowBtn.addEventListener('click', regrow);
+
+  cardWrap.addEventListener('click', function (event) {
+    if (event.target === cardWrap) {
+      closeCard();
+    }
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      closeCard();
+    }
+  });
+
+  window.addEventListener('resize', resize);
+
+  resize();
+  setTimeout(function () {
+    pointer.classList.add('show');
+  }, 2800);
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
